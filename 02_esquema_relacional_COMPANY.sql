@@ -1,4 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS company;
+
+-- Restrição atribuída a um domínio --
+-- CREATE domain D_num AS INT CHECK(D_num > 0 AND D_num < 21); --
+
 CREATE TABLE company.employee(
 	Fname VARCHAR(15) NOT NULL,
     minit CHAR,
@@ -13,7 +17,11 @@ CREATE TABLE company.employee(
     PRIMARY KEY (Ssn)
 );
 
-use company;
+ALTER TABLE employee 
+	ADD CONSTRAINT fk_employee
+    FOREIGN KEY (Super_ssn) REFERENCES employee(Ssn)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
 
 CREATE TABLE departament(
 	Dname VARCHAR(15) NOT NULL,
@@ -31,6 +39,10 @@ CREATE TABLE dept_locations(
     PRIMARY KEY (Dnumber, Dlocation),
     FOREIGN KEY (Dnumber) REFERENCES departament (Dnumber)
 );
+
+ALTER TABLE departament
+	ADD CONSTRAINT fk_dept FOREIGN KEY (Mgr_ssn) REFERENCES employee(Ssn)
+    ON UPDATE CASCADE;
 
 CREATE TABLE project(
 	Pname VARCHAR(15) NOT NULL,

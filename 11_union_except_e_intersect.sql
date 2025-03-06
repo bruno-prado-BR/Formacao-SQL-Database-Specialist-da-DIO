@@ -1,0 +1,29 @@
+-- UNION, EXCEPT e INTERSECT
+
+CREATE DATABASE exemplo_10;
+USE exemplo_10;
+
+CREATE TABLE R(
+	A CHAR(2)
+);
+
+
+CREATE TABLE S(
+	A CHAR(2)
+);
+
+INSERT INTO R(A) VALUES ('a1'), ('a2'), ('a2'), ('a3');
+INSERT INTO S(A) VALUES ('a1'), ('a1'), ('a2'), ('a3'), ('a4'), ('a5');
+
+SELECT * FROM R;
+SELECT * FROM S;
+
+-- Usando EXCEPT utilizando NOT IN
+SELECT * FROM S WHERE A NOT IN (SELECT A FROM R);
+
+-- Usando INTERSECT e DISTINCT para eliminar redundância
+SELECT DISTINCT R.A FROM R WHERE R.A IN (SELECT S.A FROM S);
+
+-- Usando UNION
+(SELECT DISTINCT R.A FROM R) UNION (SELECT DISTINCT S.A FROM S);
+(SELECT R.A FROM R) UNION (SELECT S.A FROM S);  
